@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.chenxujie.mobileoa.view.MenuScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dip"
+            android:background="@drawable/bg_title" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/OASystem"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_write_announce"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_ng"
+            android:drawableStart="@drawable/ic_ng"
+            android:text="@string/write_announce"
+            style="@style/MenuDrawer.Widget.Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/missive"
+            style="@style/MenuDrawer.Widget.Category" />
+
+        <TextView
+            android:id="@+id/tv_waiting_missive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_dbgw"
+            android:drawableStart="@drawable/ic_dbgw"
+            android:text="@string/waiting_missive"
+            style="@style/MenuDrawer.Widget.Title" />
+
+        <TextView
+            android:id="@+id/tv_written_missive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_dygw"
+            android:drawableStart="@drawable/ic_dygw"
+            android:text="@string/written_missive"
+            style="@style/MenuDrawer.Widget.Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/announce"
+            style="@style/MenuDrawer.Widget.Category" />
+
+        <TextView
+            android:id="@+id/tv_notification"
+            style="@style/MenuDrawer.Widget.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_hytz"
+            android:drawableStart="@drawable/ic_hytz"
+            android:text="@string/notification" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawableStart="@drawable/ic_email"
+            android:text="@string/email"
+            style="@style/MenuDrawer.Widget.Title" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info"
+            style="@style/MenuDrawer.Widget.Category" />
+
+        <TextView
+            android:id="@+id/tv_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_qstxl"
+            android:drawableStart="@drawable/ic_qstxl"
+            android:text="@string/contacts"
+            style="@style/MenuDrawer.Widget.Title" />
+
+
+
+        <TextView
+            android:id="@+id/tv_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_xxkw"
+            android:drawableStart="@drawable/ic_xxkw"
+            android:text="@string/schedule"
+            style="@style/MenuDrawer.Widget.Title" />
+
+        <TextView
+            android:id="@+id/tv_person_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_qstxl"
+            android:drawableStart="@drawable/ic_qstxl"
+            android:text="@string/person_info"
+            style="@style/MenuDrawer.Widget.Title" />
+
+    </LinearLayout>
+
+</com.chenxujie.mobileoa.view.MenuScrollView>

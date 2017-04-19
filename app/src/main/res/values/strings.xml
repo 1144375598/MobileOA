@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">MobileOA</string>
+
+    <string-array name="levelname">
+        <item>等级1</item>
+        <item>等级2 </item>
+        <item>等级3</item>
+        <item>等级4</item>
+    </string-array>
+
+    <!-- Strings related to login -->
+    <string name="prompt_account">账号</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_fail">登录失败</string>
+    <string name="username_is_null">对不起，用户名不能为空</string>
+    <string name="password_is_null">对不起，密码不能为空</string>
+
+    <!-- menu-->
+    <string name="OASystem">OA系统</string>
+    <string name="mobileoa">移动OA</string>
+    <string name="write_announce">拟稿</string>
+    <string name="missive">公文</string>
+    <string name="waiting_missive">待办公文</string>
+    <string name="written_missive">已办公文</string>
+    <string name="announce">通知</string>
+    <string name="notification">通知公告</string>
+    <string name="email">电子邮件</string>
+    <string name="info">信息</string>
+    <string name="contacts">通讯录</string>
+    <string name="person_info">个人信息</string>
+    <string name="schedule">日程</string>
+
+    <!--WriteAnnouncementFragment-->
+    <string name="title">标题</string>
+    <string name="content">正文</string>
+    <string name="level">等级</string>
+    <string name="sender">发布人</string>
+    <string name="attachment">附件</string>
+    <string name="select_attachment">选择附件</string>
+    <string name="send">发布</string>
+
+    <!-- Strings related to PersonInfo -->
+    <string name="logout">退出账户</string>
+    <string name="username">工号</string>
+    <string name="name">姓名</string>
+    <string name="age">年龄</string>
+    <string name="sex">性别</string>
+    <string name="department">部门</string>
+    <string name="position">职位</string>
+    <string name="address">住址</string>
+    <string name="hiredate">入职时间</string>
+    <string name="educationlevel">学历</string>
+    <string name="prompt">提示</string>
+    <string name="sure_exit">确定要退出吗?</string>
+    <string name="confirm_button">确定</string>
+    <string name="cancel">取消</string>
+    <string name="update_photo_success">头像更新成功</string>
+    <string name="update_photo_fail">头像更新失败</string>
+
+    <!-- Strings related to Contacts -->
+    <string name="hint_search">请输入关键字</string>
+    <string name="search">搜索</string>
+    <string name="dial">拨号</string>
+    <string name="contact_username">姓名</string>
+    <string name="contact_phone">电话号码</string>
+    <string name="contact_mail">E-Mail</string>
+    <string name="update_contact">修改</string>
+    <string name="query_contact_fail">查询失败</string>
+    <string name="update_success">更新成功</string>
+    <string name="update_fail">更新失败，请稍后重试</string>
+    <string name="have_no_telephone">请填入电话和姓名</string>
+    <string name="add_contact">添加联系人</string>
+    <string name="add_contact_success">添加成功</string>
+    <string name="add_contact_fail">添加失败</string>
+    <string name="save">保存</string>
+    <string name="no_contact">无联系人</string>
+    <string name="delete_success">删除成功</string>
+    <string name="delete_fail">删除失败</string>
+
+    <!--schedule-->
+    <string name="schedule_title">主题</string>
+    <string name="schedule_content">内容</string>
+    <string name="schedule_address">地点</string>
+    <string name="schedule_strat_time">开始时间</string>
+    <string name="schedule_end_time">结束时间</string>
+    <string name="schedule_type_prompt">请选择事件类型</string>
+    <string name="schedule_start_hint">请选择开始时间</string>
+    <string name="schedule_end_hint">请选择结束时间</string>
+    <string name="add_schedule">添加日程</string>
+    <string name="no_schedule">无日程信息</string>
+    <string name="query_schedule_fail">查询日程失败</string>
+    <string name="title_is_null">主题不能为空</string>
+    <string name="content_is_null">内容不能为空</string>
+    <string name="starttime_is_null">开始时间不能为空</string>
+    <string name="endtime_is_null">结束时间不能为空</string>
+    <string name="add_schedule_success">日程添加成功</string>
+    <string name="add_schedule_fail">日程添加失败</string>
+    <string name="update_schedule_success">日程更新成功</string>
+    <string name="update_schedule_fail">日程更新失败</string>
+
+    <!-- Strings related to Email -->
+    <string name="add_email">写邮件</string>
+    <string name="no_email">无电子邮件</string>
+    <string name="query_email_fail">电子邮件查询失败</string>
+    <string name="email_receiver">收件人 ： </string>
+    <string name="email_sender">发件人 ： </string>
+    <string name="send_email">发送</string>
+    <string name="receiver_is_wrong">收件人错误</string>
+    <string name="add_email_success">邮件发送成功</string>
+    <string name="add_email_fail">邮件发送失败</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference" name="menuDrawerStyle"/>
+    <color name="md__defaultBackground">#FF555555</color>
+    <declare-styleable name="MenuDrawer"><attr format="reference" name="mdContentBackground"/><attr format="reference" name="mdMenuBackground"/><attr format="dimension" name="mdMenuWidth"/><attr format="reference" name="mdArrowDrawable"/><attr format="boolean" name="mdDropShadowEnabled"/><attr format="dimension" name="mdDropShadowWidth"/><attr format="color" name="mdDropShadowColor"/><attr format="reference" name="mdDropShadow"/></declare-styleable>
+    <item name="mdActiveViewPosition" type="id"/>
+    <item name="md__content" type="id"/>
+    <item name="md__layout" type="id"/>
+    <item name="md__menu" type="id"/>
+    <style name="Widget"/>
+    <style name="Widget.MenuDrawer">
+        <item name="mdMenuBackground">@color/md__defaultBackground</item>
+        <item name="mdContentBackground">?android:attr/windowBackground</item>
+    </style>
+</resources>

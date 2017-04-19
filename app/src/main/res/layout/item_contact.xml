@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableRow1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/position"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="14dip"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="#E0E0E0"
+        android:textSize="20dip" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="14dip"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textColor="#E0E0E0"
+        android:textSize="20dip" />
+
+    <ImageButton
+        android:id="@+id/dial"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_gravity="right"
+        android:layout_marginRight="14dip"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:contentDescription="@string/dial"
+        android:focusable="false"
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip"
+        android:src="@android:drawable/stat_sys_phone_call" />
+
+</TableRow>
