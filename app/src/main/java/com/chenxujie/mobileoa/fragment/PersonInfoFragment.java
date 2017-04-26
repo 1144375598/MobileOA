@@ -5,14 +5,13 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import com.chenxujie.mobileoa.R;
 import com.chenxujie.mobileoa.activity.LoginActivity;
 import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
-import com.chenxujie.mobileoa.util.GetPathFromUri;
 import com.chenxujie.mobileoa.util.PhotoUtil;
 
 import java.io.File;
@@ -66,9 +64,11 @@ public class PersonInfoFragment extends Fragment {
     private Activity activity;
     private personCallBack personCallBack;
 
+
     public Uri getImageUri() {
         return imageUri;
     }
+
 
     public PersonInfoFragment(personCallBack cb) {
         super();
@@ -239,6 +239,28 @@ public class PersonInfoFragment extends Fragment {
         String path = outputImage.getAbsolutePath();
         final Bitmap picture = BitmapFactory.decodeFile(path);
         PhotoUtil.compressImageByQuality(picture, path);
+
+        if (!TextUtils.isEmpty(BmobUser.getCurrentUser(User.class).getPhotoUrl())) {
+            BmobFile file = new BmobFile();
+            file.setUrl(BmobUser.getCurrentUser(User.class).getPhotoUrl());
+            file.delete(new UpdateListener() {
+
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        uploadPicture(picture);
+                    } else {
+                        Log.e("文件删除失败：", e.getErrorCode() + "," + e.getMessage());
+                    }
+                }
+            });
+        } else {
+            uploadPicture(picture);
+        }
+
+    }
+
+    private void uploadPicture(final Bitmap picture) {
         final BmobFile bmobFile = new BmobFile(outputImage);
         bmobFile.uploadblock(new UploadFileListener() {
             @Override
@@ -254,7 +276,7 @@ public class PersonInfoFragment extends Fragment {
                                 photo.setImageBitmap(picture); // 将裁剪后的照片显示出来
                                 Toast.makeText(activity, "头像上传成功", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(activity, "头像个更新失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "头像更新失败", Toast.LENGTH_SHORT).show();
                                 Log.e("头像更新失败", e.getErrorCode() + " " + e.getMessage());
                             }
                         }
@@ -266,7 +288,6 @@ public class PersonInfoFragment extends Fragment {
             }
         });
     }
-
 }
 
 

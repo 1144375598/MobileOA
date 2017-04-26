@@ -25,6 +25,7 @@ import com.chenxujie.mobileoa.fragment.WaitingMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WriteAnnounceFragment;
 import com.chenxujie.mobileoa.fragment.WriteMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WrittenMissiveFragment;
+import com.chenxujie.mobileoa.util.ActivityManager;
 import com.chenxujie.mobileoa.util.GetPathFromUri;
 import com.chenxujie.mobileoa.view.MenuScrollView;
 
@@ -50,7 +51,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ActivityManager.addActivity(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -106,7 +107,6 @@ public class MainActivity extends FragmentActivity implements
         if (activeView != null) {
             menuDrawer.setActiveView(activeView);
             contentTextView.setText(activeView.getText());
-            // TODO 替换Fragment
         }
 
         // This will animate the drawer open and closed until the user manually
@@ -270,8 +270,6 @@ public class MainActivity extends FragmentActivity implements
                     ((WriteAnnounceFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.content_frame))
                             .setAttachment(filename, path);
-                    Log.e("filename", filename);
-                    Log.e("filepath", path);
                 }
                 break;
             case WriteMissiveFragment.SELECT_FILE:
@@ -282,9 +280,6 @@ public class MainActivity extends FragmentActivity implements
                     ((WriteMissiveFragment) getSupportFragmentManager()
                             .findFragmentById(R.id.content_frame))
                             .setAttachment(filename, path);
-                    Log.e("filename", filename);
-                    Log.e("filepath", path);
-
                 }
                 break;
             case PersonInfoFragment.TAKE_PHOTO:
@@ -322,4 +317,9 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityManager.removeActivity(this);
+    }
 }
