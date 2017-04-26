@@ -1,25 +1,16 @@
 package com.chenxujie.mobileoa.model;
 
 import cn.bmob.v3.BmobObject;
-import cn.bmob.v3.datatype.BmobDate;
 
 
 public class Notification extends BmobObject {
-    private User sender;
+    private String sender;
     private String title;
     private String content;
-    private BmobDate time;
+    private String date;
     private String level;
     private String filename;
     private String filepath;
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
 
     public String getTitle() {
         return title;
@@ -37,12 +28,20 @@ public class Notification extends BmobObject {
         this.content = content;
     }
 
-    public BmobDate getTime() {
-        return time;
+    public String getSender() {
+        return sender;
     }
 
-    public void setTime(BmobDate time) {
-        this.time = time;
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getLevel() {

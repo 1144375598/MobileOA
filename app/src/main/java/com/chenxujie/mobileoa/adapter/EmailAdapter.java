@@ -45,7 +45,7 @@ public class EmailAdapter extends ArrayAdapter <Email>{
             viewHolder = (ViewHolder)view.getTag();
         }
         viewHolder.title.setText(email.getTitle());
-        viewHolder.sender.setText(email.getSender().getName());
+        viewHolder.sender.setText(email.getSender());
         viewHolder.date.setText(email.getDate());
         viewHolder.position.setText(Integer.valueOf(position+1).toString());
         return view;

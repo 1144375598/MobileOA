@@ -2,6 +2,7 @@ package com.chenxujie.mobileoa.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import com.chenxujie.mobileoa.R;
 import com.chenxujie.mobileoa.model.Contact;
 import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
+import com.chenxujie.mobileoa.util.Test;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -49,11 +51,14 @@ public class ContactActivity extends Activity {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((telephone.getText() != null && !telephone.getText().toString().equals("")) && (name.getText() != null && !name.getText().toString().equals(""))) {
-                    updateContact();
-                } else {
+                if (TextUtils.isEmpty(name.getText().toString()) || TextUtils.isEmpty(telephone.getText().toString())) {
                     Toast.makeText(ContactActivity.this, getString(R.string.have_no_telephone),
                             Toast.LENGTH_SHORT).show();
+                } else if (!Test.testPhone(telephone.getText().toString())) {
+                    Toast.makeText(ContactActivity.this, "请输入正确的电话号码",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    updateContact();
                 }
             }
         });

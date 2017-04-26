@@ -33,9 +33,17 @@
         </activity>
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.ContactActivity" />
-        <activity android:name=".activity.AddScheduleActivity" />
+        <activity
+            android:name=".activity.AddScheduleActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activity.AddEmailActivity" />
-        <activity android:name=".activity.EmailDetailActivity"></activity>
+        <activity android:name=".activity.EmailDetailActivity" />
+        <activity
+            android:name=".activity.NotificationDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.MissiveDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

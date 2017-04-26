@@ -10,27 +10,36 @@ import cn.bmob.v3.datatype.BmobDate;
 public class Missive extends BmobObject {
     private String title;
     private String content;
-    private User receiver;
-    private BmobDate time;
-    private String level;
+    private String receiver;
+    private String time;
     private String fileName;
     private String filePath;
-    private User sender;
+    private String sender;
+    private String comment;
+    private Boolean isWritten;
 
-    public BmobDate getTime() {
+    public Boolean getWritten() {
+        return isWritten;
+    }
+
+    public void setWritten(Boolean written) {
+        isWritten = written;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getTime() {
         return time;
     }
 
-    public void setTime(BmobDate time) {
+    public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getFileName() {
@@ -65,19 +74,19 @@ public class Missive extends BmobObject {
         this.content = content;
     }
 
-    public User getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(User receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
-    public User getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(User sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 }

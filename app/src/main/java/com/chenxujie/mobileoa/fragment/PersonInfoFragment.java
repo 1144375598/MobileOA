@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -27,6 +28,7 @@ import com.chenxujie.mobileoa.R;
 import com.chenxujie.mobileoa.activity.LoginActivity;
 import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
+import com.chenxujie.mobileoa.util.GetPathFromUri;
 import com.chenxujie.mobileoa.util.PhotoUtil;
 
 import java.io.File;
@@ -42,10 +44,11 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 
 public class PersonInfoFragment extends Fragment {
-    public static final int TAKE_PHOTO = 1;
-    public static final int CROP_PHOTO = 2;
+    public static final int TAKE_PHOTO = 5;
+    public static final int CROP_PHOTO = 6;
+    public static final int SELECT_PHOTO = 7;
 
-    File outputImage = new File(Environment.getExternalStorageDirectory(), "output_image.jpg");
+    private File outputImage = new File(Environment.getExternalStorageDirectory() + "/MobileOA/headPicture", "headPicture.jpg");
     private Uri imageUri = Uri.fromFile(outputImage);
 
     private TextView username;
@@ -61,9 +64,15 @@ public class PersonInfoFragment extends Fragment {
     private Button logout;
     private User user;
     private Activity activity;
+    private personCallBack personCallBack;
 
-    public PersonInfoFragment() {
-        // Required empty public constructor
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public PersonInfoFragment(personCallBack cb) {
+        super();
+        personCallBack = cb;
     }
 
     @Override
@@ -144,7 +153,6 @@ public class PersonInfoFragment extends Fragment {
         }
 
         if (outputImage.exists()) {
-            Log.e("未下载", "1");
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
                 photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
@@ -152,12 +160,12 @@ public class PersonInfoFragment extends Fragment {
                 f.printStackTrace();
             }
         } else {
-            Log.e("开始下载", "1");
             BmobFile bmobFile = new BmobFile(user.getPhotoName(), "", user.getPhotoUrl());
             bmobFile.download(outputImage, new DownloadFileListener() {
+
                 @Override
-                public void onStart() {
-                    Log.e("开始下载图片", "download");
+                public void onProgress(Integer integer, long l) {
+
                 }
 
                 @Override
@@ -175,10 +183,6 @@ public class PersonInfoFragment extends Fragment {
                     }
                 }
 
-                @Override
-                public void onProgress(Integer integer, long l) {
-
-                }
             });
         }
     }
@@ -189,7 +193,7 @@ public class PersonInfoFragment extends Fragment {
         if (outputImage.exists()) {
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
-                photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
+                photo.setImageBitmap(bitmap); // 将照片显示出来
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
             }
@@ -200,7 +204,13 @@ public class PersonInfoFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         menu.add(0, 0, 0, "重新拍一张");
-        //menu.add(0, 1, 0, "从相册选取");
+        menu.add(0, 1, 0, "从相册选取");
+    }
+
+    public interface personCallBack {
+        void openCamera(Uri uri);
+
+        void openGallery();
     }
 
     @Override
@@ -213,68 +223,50 @@ public class PersonInfoFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Intent intent;
         switch (item.getItemId()) {
             case 0:
-                intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TAKE_PHOTO); // 启动相机程序
+                personCallBack.openCamera(imageUri);
                 break;
-           /* case 1:
-                intent = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image*//*");
-                startActivityForResult(intent, TAKE_PHOTO);
-                break;*/
+            case 1:
+                personCallBack.openGallery();
+                break;
         }
         return super.onContextItemSelected(item);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == activity.RESULT_OK) {
-                    Intent intent = new Intent("com.android.camera.action.CROP");
-                    intent.setDataAndType(imageUri, "image/*");
-                    intent.putExtra("scale", true);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, CROP_PHOTO); // 启动裁剪程序
-                }
-                break;
-            case CROP_PHOTO:
-                if (resultCode == activity.RESULT_OK) {
-                    String path = outputImage.getAbsolutePath();
-                    Bitmap bitmap = BitmapFactory.decodeFile(path);
-                    PhotoUtil.compressImageByQuality(bitmap, Environment.getExternalStorageDirectory().getPath() + "/output_image.jpg");
-                    photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
-                    final BmobFile bmobFile = new BmobFile(outputImage);
-                    bmobFile.uploadblock(new UploadFileListener() {
+
+    public void setHeadPicture() {
+        String path = outputImage.getAbsolutePath();
+        final Bitmap picture = BitmapFactory.decodeFile(path);
+        PhotoUtil.compressImageByQuality(picture, path);
+        final BmobFile bmobFile = new BmobFile(outputImage);
+        bmobFile.uploadblock(new UploadFileListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    User user = new User();
+                    user.setPhotoUrl(bmobFile.getFileUrl());
+                    user.setPhotoName(bmobFile.getFilename());
+                    user.update(BmobUser.getCurrentUser(User.class).getObjectId(), new UpdateListener() {
                         @Override
                         public void done(BmobException e) {
                             if (e == null) {
-                                User user = new User();
-                                user.setPhotoUrl(bmobFile.getFileUrl());
-                                user.setPhotoName(bmobFile.getFilename());
-                                user.update(BmobUser.getCurrentUser(User.class).getObjectId(), new UpdateListener() {
-                                    @Override
-                                    public void done(BmobException e) {
-                                        Toast.makeText(activity, "头像上传成功", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                                photo.setImageBitmap(picture); // 将裁剪后的照片显示出来
+                                Toast.makeText(activity, "头像上传成功", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(activity, "头像上传失败", Toast.LENGTH_SHORT).show();
-                                Log.e("头像上传失败", e.getErrorCode() + " " + e.getMessage());
-
+                                Toast.makeText(activity, "头像个更新失败", Toast.LENGTH_SHORT).show();
+                                Log.e("头像更新失败", e.getErrorCode() + " " + e.getMessage());
                             }
                         }
                     });
-
+                } else {
+                    Toast.makeText(activity, "头像上传失败", Toast.LENGTH_SHORT).show();
+                    Log.e("头像上传失败", e.getErrorCode() + " " + e.getMessage());
                 }
-                break;
-            default:
-                break;
-        }
+            }
+        });
     }
+
 }
+
+

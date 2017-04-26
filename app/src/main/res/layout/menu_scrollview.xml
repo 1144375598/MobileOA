@@ -2,16 +2,17 @@
 <com.chenxujie.mobileoa.view.MenuScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dip"
-            android:background="@drawable/bg_title" >
+            android:background="@drawable/bg_title">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -25,42 +26,51 @@
 
         <TextView
             android:id="@+id/tv_write_announce"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_ng"
             android:drawableStart="@drawable/ic_ng"
-            android:text="@string/write_announce"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/write_announce" />
 
         <TextView
+            android:id="@+id/tv_write_missive"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/missive"
-            style="@style/MenuDrawer.Widget.Category" />
+            android:drawableLeft="@drawable/ic_ng"
+            android:drawableStart="@drawable/ic_ng"
+            android:text="@string/write_missive" />
+
+        <TextView
+            style="@style/MenuDrawer.Widget.Category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/missive" />
 
         <TextView
             android:id="@+id/tv_waiting_missive"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_dbgw"
             android:drawableStart="@drawable/ic_dbgw"
-            android:text="@string/waiting_missive"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/waiting_missive" />
 
         <TextView
             android:id="@+id/tv_written_missive"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_dygw"
             android:drawableStart="@drawable/ic_dygw"
-            android:text="@string/written_missive"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/written_missive" />
 
         <TextView
+            style="@style/MenuDrawer.Widget.Category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/announce"
-            style="@style/MenuDrawer.Widget.Category" />
+            android:text="@string/announce" />
 
         <TextView
             android:id="@+id/tv_notification"
@@ -73,47 +83,46 @@
 
         <TextView
             android:id="@+id/tv_email"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_email"
             android:drawableStart="@drawable/ic_email"
-            android:text="@string/email"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/email" />
 
         <TextView
+            style="@style/MenuDrawer.Widget.Category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/info"
-            style="@style/MenuDrawer.Widget.Category" />
+            android:text="@string/info" />
 
         <TextView
             android:id="@+id/tv_contacts"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_qstxl"
             android:drawableStart="@drawable/ic_qstxl"
-            android:text="@string/contacts"
-            style="@style/MenuDrawer.Widget.Title" />
-
+            android:text="@string/contacts" />
 
 
         <TextView
             android:id="@+id/tv_schedule"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_xxkw"
             android:drawableStart="@drawable/ic_xxkw"
-            android:text="@string/schedule"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/schedule" />
 
         <TextView
             android:id="@+id/tv_person_info"
+            style="@style/MenuDrawer.Widget.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_qstxl"
             android:drawableStart="@drawable/ic_qstxl"
-            android:text="@string/person_info"
-            style="@style/MenuDrawer.Widget.Title" />
+            android:text="@string/person_info" />
 
     </LinearLayout>
 

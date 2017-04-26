@@ -56,7 +56,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
             title.setText("Re:"+getIntent().getExtras().getString("title"));
             receiver.setText(getIntent().getExtras().getString("receiver"));
         }else{
-            sender.setText(BmobUser.getCurrentUser(User.class).getEmail());
+            sender.setText(BmobUser.getCurrentUser(User.class).getUsername());
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         date.setText(simpleDateFormat.format(new Date()));
@@ -77,7 +77,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
     }
 
     private void sendEmail() {
-        if (TextUtils.isEmpty(receiver.getText().toString()) || !Test.testEmail(receiver.getText().toString())) {
+        if (TextUtils.isEmpty(receiver.getText().toString())) {
             Toast.makeText(AddEmailActivity.this, getString(R.string.receiver_is_wrong), Toast.LENGTH_SHORT).show();
             return;
         } else if (TextUtils.isEmpty(title.getText().toString())) {

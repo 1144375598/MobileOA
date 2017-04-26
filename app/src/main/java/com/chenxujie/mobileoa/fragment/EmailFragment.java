@@ -52,7 +52,7 @@ public class EmailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contacts, null);
+        View view = inflater.inflate(R.layout.fragment_email, null);
         listView = (ListView) view.findViewById(R.id.listview_email);
         addEmail = (Button) view.findViewById(R.id.add_email);
         addEmail.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class EmailFragment extends Fragment {
         final ProgressDialog dialog = ProgressDialog.show(activity, "请稍等...", "正在打开...");
         User user = BmobUser.getCurrentUser(User.class);
         BmobQuery<Email> bmobQuery = new BmobQuery<Email>();
-        bmobQuery.addWhereEqualTo("receiver", new BmobPointer(user));
+        bmobQuery.addWhereEqualTo("receiver", user.getUsername());
         bmobQuery.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
         bmobQuery.findObjects(new FindListener<Email>() {
             @Override

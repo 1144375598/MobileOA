@@ -20,7 +20,8 @@
     <!-- menu-->
     <string name="OASystem">OA系统</string>
     <string name="mobileoa">移动OA</string>
-    <string name="write_announce">拟稿</string>
+    <string name="write_announce">写通知</string>
+    <string name="write_missive">写公文</string>
     <string name="missive">公文</string>
     <string name="waiting_missive">待办公文</string>
     <string name="written_missive">已办公文</string>
@@ -110,4 +111,7 @@
     <string name="receiver_is_wrong">收件人错误</string>
     <string name="add_email_success">邮件发送成功</string>
     <string name="add_email_fail">邮件发送失败</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

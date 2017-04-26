@@ -1,8 +1,8 @@
 package com.chenxujie.mobileoa.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.chenxujie.mobileoa.R;
-import com.chenxujie.mobileoa.model.Email;
 import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import cn.bmob.v3.BmobUser;
 
@@ -45,7 +41,7 @@ public class EmailDetailActivity extends AppCompatActivity implements View.OnCli
     }
     private void init() {
         sender.setText(getIntent().getExtras().getString("sender"));
-        receiver.setText(BmobUser.getCurrentUser(User.class).getEmail());
+        receiver.setText(BmobUser.getCurrentUser(User.class).getUsername());
         date.setText(getIntent().getExtras().getString("date"));
         title.setText(getIntent().getExtras().getString("title"));
         content.setText(getIntent().getExtras().getString("content"));

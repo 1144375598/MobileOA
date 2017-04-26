@@ -1,11 +1,11 @@
 package com.chenxujie.mobileoa.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,7 +23,9 @@ import com.chenxujie.mobileoa.fragment.PersonInfoFragment;
 import com.chenxujie.mobileoa.fragment.ScheduleFragment;
 import com.chenxujie.mobileoa.fragment.WaitingMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WriteAnnounceFragment;
+import com.chenxujie.mobileoa.fragment.WriteMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WrittenMissiveFragment;
+import com.chenxujie.mobileoa.util.GetPathFromUri;
 import com.chenxujie.mobileoa.view.MenuScrollView;
 
 import net.simonvt.widget.MenuDrawer;
@@ -31,7 +33,7 @@ import net.simonvt.widget.MenuDrawerManager;
 
 
 public class MainActivity extends FragmentActivity implements
-        View.OnClickListener{
+        View.OnClickListener, WriteAnnounceFragment.CallBack, PersonInfoFragment.personCallBack {
 
     private static final String STATE_MENUDRAWER = "com.chenxujie.mobileoa.activity.MainActivity.menuDrawer";
     private static final String STATE_ACTIVE_VIEW_ID = "com.chenxujie.mobileoa.activity.MainActivity.activeViewId";
@@ -84,6 +86,7 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.tv_contacts).setOnClickListener(this);
         findViewById(R.id.tv_schedule).setOnClickListener(this);
         findViewById(R.id.tv_person_info).setOnClickListener(this);
+        findViewById(R.id.tv_write_missive).setOnClickListener(this);
         ImageButton imageButton = (ImageButton) findViewById(R.id.btn_menu);
         imageButton.setOnClickListener(new View.OnClickListener() {
 
@@ -161,9 +164,14 @@ public class MainActivity extends FragmentActivity implements
         Fragment newContent = null;
         switch (activeViewId) {
             case R.id.tv_write_announce:
-                //拟稿
+                //写通知
                 setSearchVisibility(false);
-                newContent = new WriteAnnounceFragment();
+                newContent = new WriteAnnounceFragment(this);
+                break;
+            case R.id.tv_write_missive:
+                //写通知
+                setSearchVisibility(false);
+                newContent = new WriteMissiveFragment(this);
                 break;
             case R.id.tv_waiting_missive:
                 //代办公文
@@ -193,7 +201,7 @@ public class MainActivity extends FragmentActivity implements
             case R.id.tv_person_info:
                 //个人信息
                 setSearchVisibility(false);
-                newContent = new PersonInfoFragment();
+                newContent = new PersonInfoFragment(this);
                 break;
             case R.id.tv_contacts:
                 //通讯录
@@ -221,5 +229,97 @@ public class MainActivity extends FragmentActivity implements
         searchLayout.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    public void openFile(int code) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, code);
+    }
+
+    @Override
+    public void onSucess() {
+        findViewById(R.id.tv_waiting_missive).performClick();
+    }
+
+    @Override
+    public void openCamera(Uri uri) {
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, PersonInfoFragment.TAKE_PHOTO); // 启动相机程序
+    }
+
+    @Override
+    public void openGallery() {
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent, PersonInfoFragment.SELECT_PHOTO);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Uri uri;
+        String path;
+        String filename;
+        switch (requestCode) {
+            case WriteAnnounceFragment.SELECT_FILE:
+                if (resultCode == RESULT_OK) {
+                    uri = data.getData();
+                    path = GetPathFromUri.getPath(this, uri);
+                    filename = path.substring(path.lastIndexOf("/") + 1, path.length());
+                    ((WriteAnnounceFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.content_frame))
+                            .setAttachment(filename, path);
+                    Log.e("filename", filename);
+                    Log.e("filepath", path);
+                }
+                break;
+            case WriteMissiveFragment.SELECT_FILE:
+                if (resultCode == RESULT_OK) {
+                    uri = data.getData();
+                    path = GetPathFromUri.getPath(this, uri);
+                    filename = path.substring(path.lastIndexOf("/") + 1, path.length());
+                    ((WriteMissiveFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.content_frame))
+                            .setAttachment(filename, path);
+                    Log.e("filename", filename);
+                    Log.e("filepath", path);
+
+                }
+                break;
+            case PersonInfoFragment.TAKE_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    uri = ((PersonInfoFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.content_frame))
+                            .getImageUri();
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(uri, "image/*");
+                    intent.putExtra("scale", true);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    startActivityForResult(intent, PersonInfoFragment.CROP_PHOTO); // 启动裁剪程序
+                }
+                break;
+            case PersonInfoFragment.SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    Uri imageUri = ((PersonInfoFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.content_frame))
+                            .getImageUri();
+                    Intent intent = new Intent("com.android.camera.action.CROP");
+                    intent.setDataAndType(data.getData(), "image/*");
+                    intent.putExtra("scale", true);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent, PersonInfoFragment.CROP_PHOTO);
+                }
+                break;
+            case PersonInfoFragment.CROP_PHOTO:
+                Log.e("crop photo", "enter");
+                if (resultCode == RESULT_OK) {
+                    ((PersonInfoFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.content_frame))
+                            .setHeadPicture();
+                }
+                break;
+        }
+    }
 
 }
