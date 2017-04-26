@@ -149,7 +149,7 @@ public class PersonInfoFragment extends Fragment {
         department.setText(user.getDepartment());
         position.setText(user.getPosition());
         if (user.getHiredate() != null) {
-            hiredate.setText(user.getHiredate().toString());
+            hiredate.setText(user.getHiredate().getDate());
         }
 
         if (outputImage.exists()) {
