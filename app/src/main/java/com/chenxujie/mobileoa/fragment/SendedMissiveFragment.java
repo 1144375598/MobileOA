@@ -1,5 +1,6 @@
 package com.chenxujie.mobileoa.fragment;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -29,23 +30,21 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
 
-public class WaitingMissiveFragment extends Fragment {
+public class SendedMissiveFragment extends Fragment {
     private ListView listView;
     private Activity activity;
     private WrittenMissiveAdapter writtenMissiveAdapter;
     private List<Missive> missiveList;
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         activity = (Activity) context;
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_written_missive, null);
-        listView = (ListView) view.findViewById(R.id.listview_written_missive);
+        View view = inflater.inflate(R.layout.fragment_sended_missive, null);
+        listView = (ListView) view.findViewById(R.id.listview_sended_missive);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,7 +58,7 @@ public class WaitingMissiveFragment extends Fragment {
                 bundle.putString("filename", missive.getFileName());
                 bundle.putString("filepath", missive.getFilePath());
                 bundle.putString("comment", missive.getComment());
-                bundle.putBoolean("isWritten", false);
+                bundle.putBoolean("isWritten", missive.getWritten());
                 bundle.putString("id", missive.getObjectId());
                 Intent intent = new Intent(activity, MissiveDetailActivity.class);
                 intent.putExtras(bundle);
@@ -79,8 +78,7 @@ public class WaitingMissiveFragment extends Fragment {
         final ProgressDialog dialog = ProgressDialog.show(activity, "请稍等...", "正在打开...");
         BmobQuery<Missive> bmobQuery = new BmobQuery<>();
         bmobQuery.setLimit(1000);
-        bmobQuery.addWhereEqualTo("isWritten", false);
-        bmobQuery.addWhereEqualTo("receiver", BmobUser.getCurrentUser(User.class).getUsername());
+        bmobQuery.addWhereEqualTo("sender", BmobUser.getCurrentUser(User.class).getUsername());
         bmobQuery.findObjects(new FindListener<Missive>() {
             @Override
             public void done(List<Missive> list, BmobException e) {
@@ -91,13 +89,15 @@ public class WaitingMissiveFragment extends Fragment {
                     listView.setAdapter(writtenMissiveAdapter);
                 } else {
                     if (e.getErrorCode() == 9009) {
-                        Toast.makeText(activity, "无待办公文", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "无已发送公文", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(activity, "待办公文查询失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "已发送公文查询失败", Toast.LENGTH_SHORT).show();
                     }
-                    Log.e("代办公文查询失败", e.getErrorCode() + " " + e.getMessage());
+                    Log.e("发送公文查询失败", e.getErrorCode() + " " + e.getMessage());
                 }
             }
         });
     }
+
+
 }

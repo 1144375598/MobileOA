@@ -160,30 +160,33 @@ public class PersonInfoFragment extends Fragment {
                 f.printStackTrace();
             }
         } else {
-            BmobFile bmobFile = new BmobFile(user.getPhotoName(), "", user.getPhotoUrl());
-            bmobFile.download(outputImage, new DownloadFileListener() {
+            if(!TextUtils.isEmpty(user.getPhotoUrl())){
+                BmobFile bmobFile = new BmobFile(user.getPhotoName(), "", user.getPhotoUrl());
+                bmobFile.download(outputImage, new DownloadFileListener() {
 
-                @Override
-                public void onProgress(Integer integer, long l) {
+                    @Override
+                    public void onProgress(Integer integer, long l) {
 
-                }
-
-                @Override
-                public void done(String s, BmobException e) {
-                    if (e == null) {
-                        try {
-                            Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
-                            photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
-                        } catch (FileNotFoundException f) {
-                            f.printStackTrace();
-                        }
-                    } else {
-                        Toast.makeText(activity, "头像下载失败", Toast.LENGTH_SHORT).show();
-                        Log.e("头像下载失败", e.getErrorCode() + " " + e.getMessage());
                     }
-                }
 
-            });
+                    @Override
+                    public void done(String s, BmobException e) {
+                        if (e == null) {
+                            try {
+                                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
+                                photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
+                            } catch (FileNotFoundException f) {
+                                f.printStackTrace();
+                            }
+                        } else {
+                            Toast.makeText(activity, "头像下载失败", Toast.LENGTH_SHORT).show();
+                            Log.e("头像下载失败", e.getErrorCode() + " " + e.getMessage());
+                        }
+                    }
+
+                });
+            }
+
         }
     }
 

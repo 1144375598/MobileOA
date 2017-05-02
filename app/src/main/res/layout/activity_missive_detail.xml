@@ -87,7 +87,7 @@
                             android:paddingLeft="16dp"
                             android:text="标题"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/missive_title"
@@ -95,13 +95,13 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/txt_title_label"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -117,7 +117,7 @@
                             android:paddingLeft="16dp"
                             android:text="发布时间"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/missive_date"
@@ -127,13 +127,13 @@
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/txt_date_label"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -150,7 +150,7 @@
                             android:paddingLeft="16dp"
                             android:text="正文"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/missive_content"
@@ -158,13 +158,13 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/txt_content_label"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
 
 
                     <RelativeLayout
@@ -182,7 +182,7 @@
                             android:paddingLeft="16dp"
                             android:text="发布人"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/missive_sender"
@@ -190,15 +190,44 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/txt_jinbanren_label"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
 
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp">
 
+                        <TextView
+                            android:id="@+id/txt_receiver_label"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="16dp"
+                            android:text="审批人"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/missive_receiver"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/txt_receiver_label"
+                            android:textColor="@color/gray"/>
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#f0f0f8"/>
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -214,7 +243,7 @@
                             android:paddingLeft="16dp"
                             android:text="附件"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <Button
                             android:id="@+id/missive_attachment"
@@ -224,13 +253,45 @@
                             android:layout_toRightOf="@id/txt_attachment_label"
                             android:background="@drawable/btn1_selector"
                             android:text="查看附件"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"/>
                     </RelativeLayout>
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="8dp"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:id="@+id/txt_status"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:paddingLeft="16dp"
+                            android:text="状态"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/missive_status"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/txt_status"
+                            android:textColor="@color/gray"/>
+                    </RelativeLayout>
+
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="#f0f0f8"/>
 
                     <RelativeLayout
                         android:layout_width="fill_parent"
@@ -247,7 +308,7 @@
                             android:paddingLeft="16dp"
                             android:text="审批意见"
                             android:textSize="18sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"/>
 
                         <EditText
                             android:id="@+id/missive_comment"
@@ -255,18 +316,20 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@id/txt_level_label"
-                            android:textColor="@color/gray" />
+                            android:textColor="@color/gray"/>
                     </RelativeLayout>
 
 
                     <View
                         android:layout_width="fill_parent"
                         android:layout_height="1dp"
-                        android:background="#f0f0f8" />
+                        android:background="#f0f0f8"/>
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/line"
                 android:layout_width="fill_parent"
                 android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
@@ -282,7 +345,7 @@
                     android:paddingLeft="24dp"
                     android:paddingRight="24dp"
                     android:text="@string/send_email"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
             </LinearLayout>
         </LinearLayout>

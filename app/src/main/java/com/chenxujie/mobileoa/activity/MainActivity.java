@@ -21,6 +21,7 @@ import com.chenxujie.mobileoa.fragment.EmailFragment;
 import com.chenxujie.mobileoa.fragment.NotificationFragment;
 import com.chenxujie.mobileoa.fragment.PersonInfoFragment;
 import com.chenxujie.mobileoa.fragment.ScheduleFragment;
+import com.chenxujie.mobileoa.fragment.SendedMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WaitingMissiveFragment;
 import com.chenxujie.mobileoa.fragment.WriteAnnounceFragment;
 import com.chenxujie.mobileoa.fragment.WriteMissiveFragment;
@@ -88,6 +89,7 @@ public class MainActivity extends FragmentActivity implements
         findViewById(R.id.tv_schedule).setOnClickListener(this);
         findViewById(R.id.tv_person_info).setOnClickListener(this);
         findViewById(R.id.tv_write_missive).setOnClickListener(this);
+        findViewById(R.id.tv_sended_missive).setOnClickListener(this);
         ImageButton imageButton = (ImageButton) findViewById(R.id.btn_menu);
         imageButton.setOnClickListener(new View.OnClickListener() {
 
@@ -182,6 +184,11 @@ public class MainActivity extends FragmentActivity implements
                 //已阅公文
                 setSearchVisibility(false);
                 newContent = new WrittenMissiveFragment();
+                break;
+            case R.id.tv_sended_missive:
+                //已阅公文
+                setSearchVisibility(false);
+                newContent = new SendedMissiveFragment();
                 break;
             case R.id.tv_notification:
                 //通知公告

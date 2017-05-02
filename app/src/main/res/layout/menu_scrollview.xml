@@ -65,6 +65,14 @@
             android:drawableLeft="@drawable/ic_dygw"
             android:drawableStart="@drawable/ic_dygw"
             android:text="@string/written_missive" />
+        <TextView
+            android:id="@+id/tv_sended_missive"
+            style="@style/MenuDrawer.Widget.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_dygw"
+            android:drawableStart="@drawable/ic_dygw"
+            android:text="已发公文" />
 
         <TextView
             style="@style/MenuDrawer.Widget.Category"

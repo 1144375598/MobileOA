@@ -19,7 +19,9 @@ import com.chenxujie.mobileoa.R;
 import com.chenxujie.mobileoa.model.Schedule;
 import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
+import com.chenxujie.mobileoa.util.CalendarHelper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -109,7 +111,8 @@ public class AddScheduleActivity extends Activity implements View.OnClickListene
         timePicker.setCurrentMinute(minute);
 
         // Build DateTimeDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddScheduleActivity.this,R.style.Theme_picker);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AddScheduleActivity.this, R.style
+                .Theme_picker);
         builder.setView(view);
         builder.setTitle("设置时间");
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -120,10 +123,10 @@ public class AddScheduleActivity extends Activity implements View.OnClickListene
                 Integer day = datePicker.getDayOfMonth();
                 Integer hour = timePicker.getCurrentHour();
                 Integer minute = timePicker.getCurrentMinute();
-               Calendar calendar=Calendar.getInstance();
-                calendar.set(year,month,day,hour,minute);
-                Date date=new Date(calendar.getTimeInMillis());
-                SimpleDateFormat dateformat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day, hour, minute);
+                Date date = new Date(calendar.getTimeInMillis());
+                SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
                 textView.setText(dateformat.format(date));
             }
         });
@@ -137,18 +140,25 @@ public class AddScheduleActivity extends Activity implements View.OnClickListene
     }
 
     private void saveOrUpdate() {
+
         if (getIntent().getExtras().getBoolean("isAdd")) {
             if (TextUtils.isEmpty(title.getText().toString())) {
-                Toast.makeText(AddScheduleActivity.this, getString(R.string.title_is_null), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddScheduleActivity.this, getString(R.string.title_is_null), Toast
+                        .LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(content.getText().toString())) {
-                Toast.makeText(AddScheduleActivity.this, getString(R.string.content_is_null), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddScheduleActivity.this, getString(R.string.content_is_null),
+                        Toast.LENGTH_SHORT).show();
                 return;
-            } else if (TextUtils.equals(startTime.getText().toString(), getString(R.string.schedule_start_hint))) {
-                Toast.makeText(AddScheduleActivity.this, getString(R.string.starttime_is_null), Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.equals(startTime.getText().toString(), getString(R.string
+                    .schedule_start_hint))) {
+                Toast.makeText(AddScheduleActivity.this, getString(R.string.starttime_is_null),
+                        Toast.LENGTH_SHORT).show();
                 return;
-            } else if (TextUtils.equals(endTime.getText().toString(), getString(R.string.schedule_end_hint))) {
-                Toast.makeText(AddScheduleActivity.this, getString(R.string.endtime_is_null), Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.equals(endTime.getText().toString(), getString(R.string
+                    .schedule_end_hint))) {
+                Toast.makeText(AddScheduleActivity.this, getString(R.string.endtime_is_null),
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else {
                 Schedule schedule = new Schedule();
@@ -162,10 +172,12 @@ public class AddScheduleActivity extends Activity implements View.OnClickListene
                     @Override
                     public void done(String s, BmobException e) {
                         if (e == null) {
-                            Toast.makeText(AddScheduleActivity.this, getString(R.string.add_schedule_success), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddScheduleActivity.this, getString(R.string
+                                    .add_schedule_success), Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
-                            Toast.makeText(AddScheduleActivity.this, getString(R.string.add_schedule_fail), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddScheduleActivity.this, getString(R.string
+                                    .add_schedule_fail), Toast.LENGTH_SHORT).show();
                             Log.e("日程添加失败", e.getErrorCode() + " " + e.getMessage());
                         }
                     }
@@ -183,15 +195,32 @@ public class AddScheduleActivity extends Activity implements View.OnClickListene
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
-                        Toast.makeText(AddScheduleActivity.this, getString(R.string.update_schedule_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddScheduleActivity.this, getString(R.string
+                                .update_schedule_success), Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Toast.makeText(AddScheduleActivity.this, getString(R.string.update_schedule_fail), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddScheduleActivity.this, getString(R.string
+                                .update_schedule_fail), Toast.LENGTH_SHORT).show();
                         Log.e("日程更新失败", e.getErrorCode() + " " + e.getMessage());
                     }
                 }
             });
         }
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = dateformat.parse(startTime.getText().toString());
+            endDate = dateformat.parse(endTime.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (startDate != null && endDate != null) {
+            CalendarHelper.deleteCalendarEvent(this, title.getText().toString());
+            CalendarHelper.addCalendarEvent(this, title.getText().toString(), content.getText()
+                    .toString(), startDate.getTime(), endDate.getTime());
+        }
+
     }
 
     @Override

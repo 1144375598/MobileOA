@@ -96,7 +96,7 @@ public class WriteMissiveFragment extends Fragment {
                 missive.setTitle(title);
                 missive.setContent(content);
                 missive.setReceiver(receiverString);
-                missive.setSender(BmobUser.getCurrentUser(User.class).getName());
+                missive.setSender(BmobUser.getCurrentUser(User.class).getUsername());
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                 missive.setTime(simpleDateFormat.format(new Date()));
                 missive.setWritten(false);

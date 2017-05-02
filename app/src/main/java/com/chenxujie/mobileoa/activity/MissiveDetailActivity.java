@@ -10,15 +10,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chenxujie.mobileoa.R;
 import com.chenxujie.mobileoa.model.Missive;
+import com.chenxujie.mobileoa.model.User;
 import com.chenxujie.mobileoa.util.ActivityManager;
 
 import java.io.File;
 
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.DownloadFileListener;
@@ -33,6 +36,9 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
     private Button confirm;
     private Button attachment;
     private ImageButton back;
+    private TextView status;
+    private LinearLayout confirmLayout;
+    private TextView receiver;
     private Boolean hasAttach = false;
 
     @Override
@@ -52,12 +58,15 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
         confirm = (Button) findViewById(R.id.missive_send);
         attachment = (Button) findViewById(R.id.missive_attachment);
         back = (ImageButton) findViewById(R.id.btn_back);
-
+        status = (TextView) findViewById(R.id.missive_status);
+        confirmLayout = (LinearLayout) findViewById(R.id.line);
+        receiver = (TextView) findViewById(R.id.missive_receiver);
 
         title.setText(getIntent().getExtras().getString("title"));
         content.setText(getIntent().getExtras().getString("content"));
         time.setText(getIntent().getExtras().getString("time"));
         sender.setText(getIntent().getExtras().getString("sender"));
+        receiver.setText(getIntent().getExtras().getString("receiver"));
         hasAttach = !TextUtils.isEmpty(getIntent().getExtras().getString("filename"));
         if (hasAttach) {
             attachment.setText(getIntent().getExtras().getString("filename"));
@@ -65,11 +74,22 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
         } else {
             attachment.setVisibility(View.GONE);
         }
-
-        if (getIntent().getExtras().getBoolean("isWritten")) {
+        if (getIntent().getExtras().getString("sender").equals(BmobUser.getCurrentUser(User.class)
+                .getUsername())) {
+            if (getIntent().getExtras().getBoolean("isWritten")) {
+                comment.setText(getIntent().getExtras().getString("comment"));
+                comment.setFocusable(false);
+                confirmLayout.setVisibility(View.GONE);
+                status.setText("已批阅");
+            } else {
+                status.setText("未批阅");
+                comment.setFocusable(false);
+                confirmLayout.setVisibility(View.GONE);
+            }
+        } else if (getIntent().getExtras().getBoolean("isWritten")) {
             comment.setText(getIntent().getExtras().getString("comment"));
             comment.setFocusable(false);
-            confirm.setVisibility(View.GONE);
+            confirmLayout.setVisibility(View.GONE);
         } else {
             confirm.setOnClickListener(this);
         }
@@ -115,8 +135,10 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
 
     private void downloadFile() {
         final ProgressDialog progressDialog = new ProgressDialog(MissiveDetailActivity.this);
-        BmobFile bmobFile = new BmobFile(getIntent().getExtras().getString("filename"), "", getIntent().getExtras().getString("filepath"));
-        File saveFile = new File(Environment.getExternalStorageDirectory() + "/MobileOA", bmobFile.getFilename());
+        BmobFile bmobFile = new BmobFile(getIntent().getExtras().getString("filename"), "", getIntent()
+                .getExtras().getString("filepath"));
+        File saveFile = new File(Environment.getExternalStorageDirectory() + "/MobileOA", bmobFile
+                .getFilename());
         bmobFile.download(saveFile, new DownloadFileListener() {
             @Override
             public void onStart() {
@@ -131,7 +153,8 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
             public void done(String s, BmobException e) {
                 progressDialog.dismiss();
                 if (e == null) {
-                    Toast.makeText(MissiveDetailActivity.this, "附件下载成功，请到" + s + "查看", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MissiveDetailActivity.this, "附件下载成功，请到" + s + "查看", Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     Toast.makeText(MissiveDetailActivity.this, "附件下载失败", Toast.LENGTH_SHORT).show();
                     Log.e("附件下载失败", e.getErrorCode() + " " + e.getMessage());

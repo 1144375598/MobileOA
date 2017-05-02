@@ -25,6 +25,7 @@ import com.chenxujie.mobileoa.activity.ContactActivity;
 import com.chenxujie.mobileoa.adapter.ScheduleAdapter;
 import com.chenxujie.mobileoa.model.Schedule;
 import com.chenxujie.mobileoa.model.User;
+import com.chenxujie.mobileoa.util.CalendarHelper;
 
 import java.util.List;
 
@@ -51,7 +52,8 @@ public class ScheduleFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, null);
         listView = (ListView) view.findViewById(R.id.listview_schedule);
         addSchedule = (Button) view.findViewById(R.id.add_schedule);
@@ -84,11 +86,13 @@ public class ScheduleFragment extends Fragment {
         registerForContextMenu(listView);
         return view;
     }
+
     @Override
     public void onStart() {
         super.onStart();
         query();
     }
+
     private void query() {
         final ProgressDialog dialog = ProgressDialog.show(activity, "请稍等...", "正在打开...");
         User user = BmobUser.getCurrentUser(User.class);
@@ -105,10 +109,12 @@ public class ScheduleFragment extends Fragment {
                     listView.setAdapter(scheduleAdapter);
                 } else {
                     if (e.getErrorCode() == 9009) {
-                        Toast.makeText(activity, getString(R.string.no_schedule), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, getString(R.string.no_schedule), Toast
+                                .LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(activity, getString(R.string.query_schedule_fail), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, getString(R.string.query_schedule_fail), Toast
+                                .LENGTH_SHORT).show();
                     }
                     Log.e("query contact fail", e.toString());
                 }
@@ -126,23 +132,28 @@ public class ScheduleFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 1:
-                AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item
+                AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView
+                        .AdapterContextMenuInfo) item
                         .getMenuInfo();
                 View view = listView.getChildAt(menuInfo.position);
                 TextView position = (TextView) view.findViewById(R.id.item_schedule_position);
+                final TextView title = (TextView) view.findViewById(R.id.item_schedule_title);
                 final Integer pos = Integer.valueOf(position.getText().toString()) - 1;
                 final Schedule temp = schedules.get(pos);
-                Schedule schedule1 = new Schedule();
+                final Schedule schedule1 = new Schedule();
                 schedule1.setObjectId(temp.getObjectId());
                 schedule1.delete(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
                         if (e == null) {
-                            Toast.makeText(activity, getString(R.string.delete_success), Toast.LENGTH_SHORT).show();
+                            CalendarHelper.deleteCalendarEvent(activity, title.getText().toString());
+                            Toast.makeText(activity, getString(R.string.delete_success), Toast
+                                    .LENGTH_SHORT).show();
                             schedules.remove(temp);
                             scheduleAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(activity, getString(R.string.delete_fail), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, getString(R.string.delete_fail), Toast
+                                    .LENGTH_SHORT).show();
                             Log.e("删除日程失败", "失败：" + e.getMessage() + "," + e.getErrorCode());
                         }
                     }
