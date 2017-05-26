@@ -139,7 +139,7 @@ public class PersonInfoFragment extends Fragment {
         username.setText(user.getUsername());
         name.setText(user.getName());
         if (user.getAge() != null) {
-            age.setText(user.getAge());
+            age.setText(user.getAge().toString());
         }
         if (user.getSex() != null) {
             sex.setText(user.getSex() ? "男" : "女");

@@ -20,10 +20,13 @@ import com.chenxujie.mobileoa.util.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.http.bean.Init;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
 public class AddEmailActivity extends Activity implements View.OnClickListener {
@@ -34,6 +37,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
     private EditText title;
     private EditText content;
     private Button send;
+    private List<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +53,14 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
         content = (EditText) findViewById(R.id.et_email_content);
         send = (Button) findViewById(R.id.btn_send);
         init();
+        queryUsers();
     }
 
     private void init() {
-        if(getIntent().getExtras().getBoolean("isReply")){
-            title.setText("Re:"+getIntent().getExtras().getString("title"));
+        if (getIntent().getExtras().getBoolean("isReply")) {
+            title.setText("Re:" + getIntent().getExtras().getString("title"));
             receiver.setText(getIntent().getExtras().getString("receiver"));
-        }else{
+        } else {
             sender.setText(BmobUser.getCurrentUser(User.class).getUsername());
         }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -78,15 +83,31 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
 
     private void sendEmail() {
         if (TextUtils.isEmpty(receiver.getText().toString())) {
-            Toast.makeText(AddEmailActivity.this, getString(R.string.receiver_is_wrong), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddEmailActivity.this, getString(R.string.receiver_is_wrong), Toast
+                    .LENGTH_SHORT).show();
             return;
         } else if (TextUtils.isEmpty(title.getText().toString())) {
-            Toast.makeText(AddEmailActivity.this, getString(R.string.title_is_null), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddEmailActivity.this, getString(R.string.title_is_null), Toast.LENGTH_SHORT)
+                    .show();
             return;
         } else if (TextUtils.isEmpty(content.getText().toString())) {
-            Toast.makeText(AddEmailActivity.this, getString(R.string.content_is_null), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddEmailActivity.this, getString(R.string.content_is_null), Toast.LENGTH_SHORT)
+                    .show();
             return;
         } else {
+            String receiverString = receiver.getText().toString();
+            Boolean flag = false;//审核人是否存在
+            for (User user : users) {
+                if (user.getUsername().equals(receiverString)) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag == false) {
+                Toast.makeText(AddEmailActivity.this, "不存在该收件人！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             Email email = new Email();
             email.setSender(BmobUser.getCurrentUser(User.class).getEmail());
             email.setTitle(title.getText().toString());
@@ -97,16 +118,34 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void done(String s, BmobException e) {
                     if (e == null) {
-                        Toast.makeText(AddEmailActivity.this, getString(R.string.add_email_success), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEmailActivity.this, getString(R.string.add_email_success), Toast
+                                .LENGTH_SHORT).show();
                         onBackPressed();
                     } else {
-                        Toast.makeText(AddEmailActivity.this, getString(R.string.add_email_fail), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddEmailActivity.this, getString(R.string.add_email_fail), Toast
+                                .LENGTH_SHORT).show();
                         Log.e("邮件发送失败", e.getErrorCode() + " " + e.getMessage());
                     }
                 }
             });
         }
 
+    }
+
+    private void queryUsers() {
+        BmobQuery<User> query = new BmobQuery<>();
+        query.setLimit(1000);
+        query.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (e == null) {
+                    users = list;
+                } else {
+                    Toast.makeText(AddEmailActivity.this, "收件人信息加载失败", Toast.LENGTH_SHORT).show();
+                    Log.e("审核人信息加载失败", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
+            }
+        });
     }
 
     @Override

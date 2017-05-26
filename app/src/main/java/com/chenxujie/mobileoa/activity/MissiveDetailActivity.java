@@ -88,9 +88,11 @@ public class MissiveDetailActivity extends AppCompatActivity implements View.OnC
             }
         } else if (getIntent().getExtras().getBoolean("isWritten")) {
             comment.setText(getIntent().getExtras().getString("comment"));
+            status.setText("已批阅");
             comment.setFocusable(false);
             confirmLayout.setVisibility(View.GONE);
         } else {
+            status.setText("未批阅");
             confirm.setOnClickListener(this);
         }
         back.setOnClickListener(this);

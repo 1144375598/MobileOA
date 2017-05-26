@@ -23,10 +23,13 @@ import com.chenxujie.mobileoa.model.User;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -44,6 +47,7 @@ public class WriteMissiveFragment extends Fragment {
     private Activity activity;
     private WriteAnnounceFragment.CallBack callBack;
     private File file;
+    private List<User> users;
 
     public WriteMissiveFragment(WriteAnnounceFragment.CallBack cb) {
         super();
@@ -67,7 +71,7 @@ public class WriteMissiveFragment extends Fragment {
         contentEdt = (EditText) view.findViewById(R.id.txt_content);
         personTv = (TextView) view.findViewById(R.id.txt_person);
         publicBtn = (Button) view.findViewById(R.id.btn_publish);
-
+        queryUsers();
         attachmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,6 +95,18 @@ public class WriteMissiveFragment extends Fragment {
                 } else if (TextUtils.isEmpty(receiverString)) {
                     Toast.makeText(container.getContext(), "审核人不能为空！", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    Boolean flag = false;//审核人是否存在
+                    for (User user : users) {
+                        if (receiverString.equals(user.getUsername())) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag == false) {
+                        Toast.makeText(container.getContext(), "不存在该审核人！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 final Missive missive = new Missive();
                 missive.setTitle(title);
@@ -124,10 +140,12 @@ public class WriteMissiveFragment extends Fragment {
                                     @Override
                                     public void done(String s, BmobException e) {
                                         if (e == null) {
-                                            Toast.makeText(container.getContext(), "公文发布成功！", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(container.getContext(), "公文发布成功！", Toast
+                                                    .LENGTH_SHORT).show();
                                             callBack.onSucess();
                                         } else {
-                                            Toast.makeText(container.getContext(), "公文发布失败，请重试", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(container.getContext(), "公文发布失败，请重试", Toast
+                                                    .LENGTH_SHORT).show();
                                             Log.e("通知发布失败", e.getErrorCode() + " " + e.getMessage());
                                         }
                                     }
@@ -143,7 +161,7 @@ public class WriteMissiveFragment extends Fragment {
                             progressDialog.setProgress(value);
                         }
                     });
-                }else{
+                } else {
                     missive.save(new SaveListener<String>() {
                         @Override
                         public void done(String s, BmobException e) {
@@ -151,7 +169,8 @@ public class WriteMissiveFragment extends Fragment {
                                 Toast.makeText(container.getContext(), "公文发布成功！", Toast.LENGTH_SHORT).show();
                                 callBack.onSucess();
                             } else {
-                                Toast.makeText(container.getContext(), "公文发布失败，请重试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(container.getContext(), "公文发布失败，请重试", Toast.LENGTH_SHORT)
+                                        .show();
                                 Log.e("通知发布失败", e.getErrorCode() + " " + e.getMessage());
                             }
                         }
@@ -163,6 +182,21 @@ public class WriteMissiveFragment extends Fragment {
 
     }
 
+    private void queryUsers() {
+        BmobQuery<User> query = new BmobQuery<>();
+        query.setLimit(1000);
+        query.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                if (e == null) {
+                    users = list;
+                } else {
+                    Toast.makeText(activity, "审核人信息加载失败", Toast.LENGTH_SHORT).show();
+                    Log.e("审核人信息加载失败", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
+            }
+        });
+    }
 
     public void setAttachment(String filename, String filePath) {
         file = new File(filePath);
