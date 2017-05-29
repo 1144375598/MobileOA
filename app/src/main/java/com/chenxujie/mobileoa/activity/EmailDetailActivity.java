@@ -18,10 +18,10 @@ import cn.bmob.v3.BmobUser;
 public class EmailDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageButton back;
     private TextView sender;
-    private EditText receiver;
+    private TextView receiver;
     private TextView date;
-    private EditText title;
-    private EditText content;
+    private TextView title;
+    private TextView content;
     private Button send;
 
     @Override
@@ -32,11 +32,11 @@ public class EmailDetailActivity extends AppCompatActivity implements View.OnCli
 
         back = (ImageButton) findViewById(R.id.btn_back);
         sender = (TextView) findViewById(R.id.tv_email_sender);
-        receiver = (EditText) findViewById(R.id.et_email_receiver);
+        receiver = (TextView) findViewById(R.id.et_email_receiver);
         date = (TextView) findViewById(R.id.tv_email_date);
-        title = (EditText) findViewById(R.id.et_email_title);
-        content = (EditText) findViewById(R.id.et_email_content);
-        send = (Button) findViewById(R.id.btn_send);
+        title = (TextView) findViewById(R.id.et_email_title);
+        content = (TextView) findViewById(R.id.et_email_content);
+        send = (Button) findViewById(R.id.btn_reply);
         init();
     }
     private void init() {
