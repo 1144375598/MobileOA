@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/img_default_round_head" />
+                android:src="@drawable/img_default_round_head"/>
 
             <TextView
                 android:id="@+id/tv_username"
@@ -39,7 +39,7 @@
                 android:background="#00000000"
                 android:duplicateParentState="true"
                 android:gravity="center_vertical|right"
-                android:minWidth="100dp" />
+                android:minWidth="100dp"/>
 
         </RelativeLayout>
 
@@ -58,7 +58,7 @@
                 android:background="#00000000"
                 android:duplicateParentState="true"
                 android:gravity="center_vertical"
-                android:text="@string/name" />
+                android:text="@string/name"/>
 
             <TextView
                 android:id="@+id/tv_name"
@@ -70,7 +70,7 @@
                 android:background="#00000000"
                 android:duplicateParentState="true"
                 android:gravity="center_vertical|right"
-                android:minWidth="100dp" />
+                android:minWidth="100dp"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -94,7 +94,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/age" />
+                    android:text="@string/age"/>
 
                 <TextView
                     android:id="@+id/tv_age"
@@ -106,7 +106,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -124,7 +124,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/sex" />
+                    android:text="@string/sex"/>
 
                 <TextView
                     android:id="@+id/tv_sex"
@@ -136,7 +136,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -154,7 +154,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/department" />
+                    android:text="@string/department"/>
 
                 <TextView
                     android:id="@+id/tv_department"
@@ -166,7 +166,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -184,7 +184,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/position" />
+                    android:text="@string/position"/>
 
                 <TextView
                     android:id="@+id/tv_position"
@@ -196,7 +196,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -214,7 +214,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/address" />
+                    android:text="@string/address"/>
 
                 <TextView
                     android:id="@+id/tv_address"
@@ -226,8 +226,9 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="44.0dip"
@@ -243,7 +244,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/hiredate" />
+                    android:text="@string/hiredate"/>
 
                 <TextView
                     android:id="@+id/tv_hiredate"
@@ -255,8 +256,9 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="44.0dip"
@@ -272,7 +274,7 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
-                    android:text="@string/educationlevel" />
+                    android:text="@string/educationlevel"/>
 
                 <TextView
                     android:id="@+id/tv_educationlevel"
@@ -284,19 +286,28 @@
                     android:background="#00000000"
                     android:duplicateParentState="true"
                     android:gravity="center_vertical|right"
-                    android:minWidth="100dp" />
+                    android:minWidth="100dp"/>
             </RelativeLayout>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/reset_pwd"
+            android:layout_width="fill_parent"
+            android:layout_height="46dip"
+            android:layout_marginTop="15.0dip"
+            android:background="@drawable/bg_button1"
+            android:text="修改密码"
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/exit_app"
             android:layout_width="fill_parent"
             android:layout_height="46.0dip"
             android:layout_marginBottom="20.0dip"
-            android:layout_marginTop="15.0dip"
+            android:layout_marginTop="10dip"
             android:background="@drawable/bg_button1"
             android:text="@string/logout"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import com.chenxujie.mobileoa.util.PhotoUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
@@ -46,7 +48,8 @@ public class PersonInfoFragment extends Fragment {
     public static final int CROP_PHOTO = 6;
     public static final int SELECT_PHOTO = 7;
 
-    private File outputImage = new File(Environment.getExternalStorageDirectory() + "/MobileOA/headPicture", "headPicture.jpg");
+    private File outputImage = new File(Environment.getExternalStorageDirectory() +
+            "/MobileOA/headPicture", "headPicture.jpg");
     private Uri imageUri = Uri.fromFile(outputImage);
 
     private TextView username;
@@ -63,6 +66,7 @@ public class PersonInfoFragment extends Fragment {
     private User user;
     private Activity activity;
     private personCallBack personCallBack;
+    private Button resetPwd;
 
 
     public Uri getImageUri() {
@@ -97,6 +101,15 @@ public class PersonInfoFragment extends Fragment {
         educationLevel = (TextView) view.findViewById(R.id.tv_educationlevel);
         hiredate = (TextView) view.findViewById(R.id.tv_hiredate);
         logout = (Button) view.findViewById(R.id.exit_app);
+        resetPwd = (Button) view.findViewById(R.id.reset_pwd);
+
+        resetPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog();
+            }
+        });
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,13 +167,14 @@ public class PersonInfoFragment extends Fragment {
 
         if (outputImage.exists()) {
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
+                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream
+                        (imageUri));
                 photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
             } catch (FileNotFoundException f) {
                 f.printStackTrace();
             }
         } else {
-            if(!TextUtils.isEmpty(user.getPhotoUrl())){
+            if (!TextUtils.isEmpty(user.getPhotoUrl())) {
                 BmobFile bmobFile = new BmobFile(user.getPhotoName(), "", user.getPhotoUrl());
                 bmobFile.download(outputImage, new DownloadFileListener() {
 
@@ -173,7 +187,8 @@ public class PersonInfoFragment extends Fragment {
                     public void done(String s, BmobException e) {
                         if (e == null) {
                             try {
-                                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
+                                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver()
+                                        .openInputStream(imageUri));
                                 photo.setImageBitmap(bitmap); // 将裁剪后的照片显示出来
                             } catch (FileNotFoundException f) {
                                 f.printStackTrace();
@@ -190,12 +205,91 @@ public class PersonInfoFragment extends Fragment {
         }
     }
 
+    private void showDialog() {
+        View view = View.inflate(activity.getApplicationContext(), R.layout.dialog_reset_pwd, null);
+        final EditText oldPwd = (EditText) view.findViewById(R.id.old_pwd);
+        final EditText newPwd = (EditText) view.findViewById(R.id.new_pwd);
+        final EditText confirmNewPwd = (EditText) view.findViewById(R.id.confirm_new_pwd);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style
+                .Theme_picker);
+        builder.setView(view);
+        builder.setTitle("重置密码");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //通过反射使密码输入错误时dialog不消失
+                try {
+                    Field field = dialog.getClass().getSuperclass()
+                            .getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialog, false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                String oldPwdString = oldPwd.getText().toString();
+                String newPwdString = newPwd.getText().toString();
+                String confirmPwdString = confirmNewPwd.getText().toString();
+                if (TextUtils.isEmpty(oldPwdString)) {
+                    oldPwd.setError("请输入旧密码");
+                } else if (TextUtils.isEmpty(newPwdString) || TextUtils.isEmpty
+                        (confirmPwdString)) {
+
+                    newPwd.setError("请输入新密码");
+                } else if (!TextUtils.equals(newPwdString, confirmPwdString)) {
+                    newPwd.requestFocus();
+                    newPwd.setError("密码不一致");
+                    confirmNewPwd.setText("");
+                } else {
+                    try {
+                        Field field = dialog.getClass().getSuperclass()
+                                .getDeclaredField("mShowing");
+                        field.setAccessible(true);
+                        field.set(dialog, true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    BmobUser.updateCurrentUserPassword(oldPwdString, newPwdString, new UpdateListener() {
+
+
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                Toast.makeText(activity, "密码修改成功", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(activity, "密码修改失败" + " " + e.getMessage(), Toast.LENGTH_SHORT)
+                                        .show();
+                                Log.e("密码修改失败", e.getErrorCode() + " " + e.getMessage());
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    Field field = dialog.getClass().getSuperclass()
+                            .getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialog, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.show();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         if (outputImage.exists()) {
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(imageUri));
+                Bitmap bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream
+                        (imageUri));
                 photo.setImageBitmap(bitmap); // 将照片显示出来
             } catch (FileNotFoundException f) {
                 f.printStackTrace();

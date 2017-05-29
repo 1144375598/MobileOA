@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/old_pwd"
+        android:layout_width="match_parent"
+        android:hint="输入旧密码"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/new_pwd"
+        android:layout_width="match_parent"
+        android:hint="输入新密码"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/confirm_new_pwd"
+        android:layout_width="match_parent"
+        android:hint="再输入一次密码"
+        android:inputType="textPassword"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

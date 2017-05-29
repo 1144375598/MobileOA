@@ -96,7 +96,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
             return;
         } else {
             String receiverString = receiver.getText().toString();
-            Boolean flag = false;//审核人是否存在
+            Boolean flag = false;//收件人是否存在
             for (User user : users) {
                 if (user.getUsername().equals(receiverString)) {
                     flag = true;
@@ -109,7 +109,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
             }
 
             Email email = new Email();
-            email.setSender(BmobUser.getCurrentUser(User.class).getEmail());
+            email.setSender(BmobUser.getCurrentUser(User.class).getUsername());
             email.setTitle(title.getText().toString());
             email.setDate(date.getText().toString());
             email.setContent(content.getText().toString());
@@ -142,7 +142,7 @@ public class AddEmailActivity extends Activity implements View.OnClickListener {
                     users = list;
                 } else {
                     Toast.makeText(AddEmailActivity.this, "收件人信息加载失败", Toast.LENGTH_SHORT).show();
-                    Log.e("审核人信息加载失败", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                    Log.e("收件人信息加载失败", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
             }
         });
